@@ -247,4 +247,123 @@ void ordenacao(int v[], int n){
 
 /*
 f(n) = a*n^3+b*n^2+c*n+d: Cúbica
+    . Exemplo
 */
+
+// Versão cúbica 
+// Se n cresce, a entrada multiplica
+void multiplica_matrizes(int A[3][3], int B[3][3], int C[3][3]){
+    for(int i=0; i<3; i++){ // n
+        for(int j=0; j<3; j++){ // n
+            C[i][j];
+            for(int h=0; k<3; k++){
+                C[i][j] += A[i][k] * B[k][j]; // Cij = Aik * Bkj
+            }
+        }
+    }
+    imprime_matriz(c);
+}
+
+// Analizar custos slide 21 e 22
+
+/*
+f(n) = K^n : Exponencial
+    . Problemas resolvidos com força bruta
+        -> Procurar a solução verificando as combinações das possibilidades
+        -> As chamadas recursivas aumentam múltiplas vezes por chamadas
+        -> Alcance lento das condições de parada ocasionando muitas chamadas recursivas
+        -> n multiplicações sucessivas de uma base (número fixo de chamadas recursivas)
+    . Quando n é 20, o tempo é  cerca de 1 milhão
+    . Como por exemplo a tabela verdade
+    . Exemplo:
+*/
+
+char T[2] = {'V', 'F'};
+
+// Terceiro precisa de 2^2^2 instruções  
+for(int a=0; a<2; a++){
+    // Segunda chamada precisa de 2^2 instruções
+    for(int b=0; b<2; b++){
+        // Primeira chamada precisa de 2 instruções
+        for(int c=0; c<2; c++){
+            printf("%c %c %c", T[a], T[B], T[c]);
+        }
+    }
+}
+
+//  . Exemplo 2
+
+int p(int n){
+    if(n==0)
+        return 0;
+    else if(n==1)
+        return 1;
+    return p(n-1) + p(n-2);
+}
+
+//  . Exemplo 3 : Fibonacci modificado - custo piorado
+
+int p(int n){
+    if(n==0 || n==1)
+        return n;
+    return p(n-1) + p(n-1);
+}
+
+// Fórmula fechada para achar o custo
+// f(n) =~ 2*f(n-1)
+//      =~ 2*(2*f(n-2))
+//      =~ 2*(2*(2*f(n-3)))
+//(Simplificando) (2^2)*(2*f(n-3)))
+//      =~ (2^i)*f(n-i), i = n-1
+//      =~ (2^n-1)*f(1)
+
+/*
+F(n) = n! : Fatorial
+    . Problemas resolvidos com força bruta
+        -> Proucurar a solução verificando todas as possibilidades
+        -> Combinatória : Custo fatorial
+        -> Cada chamada usa diversas (linear) chamadas recursivas
+        -> Alcance lento da condição de parada gerando muitas chamadas recursivas
+    . Problema do caxeiro viajante : Proucura um circuito que tenha a menor distância, começando em qualquer cidade, entre várias passando em cada cidade e voltando para a cidade de saída
+    . Para resolver
+        -> Exatos : Basicamente analisam todas as possibilidades (força bruta)
+            => Existe o algoritmo Held-Karp com custo exponencial ((n^2)*(2^n))
+        -> Heurísticos através de aluma figura heurística (estratégia), obtem-se soluções aproximadadas
+    . Observação: É um programa verificado em tempo polinomial; Dado uma sequência de cidades, verificar se passa por todas pelo menos uma vez
+    . Exemplo:
+*/
+
+void anagram(char str[], int k){
+    char tmp;
+    int i, len = strlen(str);
+    if(k==len)
+        printf("%s\n", str);
+    else{
+        // Cada chamada gera múltiplas chamadas recursivas
+        for(i=k; i<len; i++){
+            swap_char(str, k, i); // Uma troca
+            anagram(str, k+1); // Próximas permutas
+            swap_char(str, i, k); // Volta ao original
+        }
+    }
+}
+
+void subsets(int v[], int i, int n, int sub[], int fim){
+    for(int j=0; j<fim; j++)
+        printf("%d\n", sub[j]);
+    printf("\n");
+
+    for(; i<n; i++){ //n
+        sub[fim] = v[i];
+        subsets(v, i+1, n, sub, fim+1); // n-1
+    }
+}
+
+//f(n) = n*f(n-1)
+//     = n*(n-1)*f(n-2)
+//     = n*(n-1)*(n-2)*...*1
+//     = n!
+
+
+
+
