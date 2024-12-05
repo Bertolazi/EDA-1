@@ -359,11 +359,74 @@ void subsets(int v[], int i, int n, int sub[], int fim){
     }
 }
 
+// Fórmula fechada para achar o custo
 //f(n) = n*f(n-1)
 //     = n*(n-1)*f(n-2)
 //     = n*(n-1)*(n-2)*...*1
 //     = n!
 
+/*
+f(n) = log(n) : Logarítmo
+    . Função logarítmica é a inversa da função exponencial
+    . O crescimento do custo fica mais lento a medida que n cresce
+    . Tempo típico de algoritmos que vai diminuindo a instância do problema a cada passo
+        -> Restringe o problema em instâncias significativamente menores que o problema
+        -> A solução do problemaconcentra-sena solução do sub-problema
+    . Não importa a base de log pois a grandeza do resultado não tem alterações significativas
+        -> Sendo n = 1000, log(n) =~ 10 (log(n) = 3)
+        -> Sendo n = 1000000, log(n) =~ 20 (log(n) = 6)
+    . Exemplo:    
+*/
 
+// Vetor ordenado
+int pesquisa(int x, int v[], int esq, int dir){
+    int meio = (esq + dir)/2;
+    if (v[meio] == x)
+    {
+        return x;
+    }
+    if(esq >= dir) 
+        return -1;
+    else if(v[meio] < x)
+        return(x, v, meio+1, dir);
+    else    
+        return(x, v, esq, meio-1);
+}
 
+// Fórmula fechada para achar o custo
+// f(n) = f(n/2)+1
+//      = f(n/4)+2
+//      = f(n/8)+3
+//      = f(n/(2^k)) + k, (2^k) = n : log(2^k) = log(n) : k.log(2) = log(n) : k = log(n)
+//      = f(1) + log(n)
 
+/*
+f(n) = n.log(n) : Linearítmico
+    . Divisão e conquista: Problema quebrando em problemas menores, resolvendo cada um deles independentemente e depois juntando as soluções, localmente resolvidos, gera uma nova solução notodo
+    . Dividir n em partes aproximadamente iguais
+    . Cada subprogarma resolvido em tempo linear
+    . Exemplo:
+*/
+
+void intercala(int p, int q, int r, int v[]){
+    ....
+}
+
+void mergesort(int p, int r, int v[]){
+    if(p < r-1){
+        int q = (p + r)/2;
+        mergesort(p, q, v);
+        mergesort(q, r, v);
+        intercala(p, q, r, v);
+    }
+}
+
+// Fórmula fechada para achar o custo
+// f(n) = f(n/2)+f(n/2)+n 
+//      = 2*(2*f(n/4)+n/2)+n
+//      = 4*(2*f(n/8)+n/4)+2*n
+//      = 8*f(n/8)+3*n
+//      = ...
+//      = (2^i)*f(n/(2^i)+i*n) : i=log(n)
+//      = n*f(n/n)+log(n)*n 
+//      = n*f(1)+n*log(n)
