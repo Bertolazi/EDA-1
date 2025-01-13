@@ -139,7 +139,43 @@ void enfilera(int y){
 /*
 Fila cheia: 
     . u == N
+.           Início da fila               Fim da fila - "Fila cheia"
+.                |                        |  
+.                p                        u 
+       0    1    2    3    4    5    6    7    8      9      
+    ------------------------------------------------------  
+    |    |    | 22 | 55 | 99 | 88 | 33 |  2  | 7 |    |
+    ------------------------------------------------------
+.                                   N-1   p     u
+    
+    . Se inserir em uma lista cheia
+        -> Ocorre transbordamento
+        -> Como mostra no exemplo abaixo:   
 
+        . fila[u] = 4
+        . fila [7] = 4 como 7 > N-1, ocorre transbordamento
+        .
+        .           Início da fila                 Fim da fila - "Fila cheia"
+        .                |                          |  
+        .                p                          u 
+        .      0    1    2    3    4    5    6      7     8    9      
+            ------------------------------------------------------  
+            |    |    | 22 | 55 | 99 | 88 | 33 |  2 -> 4 | 7 |    |
+            ------------------------------------------------------
+        .                                   N-1     p     u
+        .                                           |
+        .                                          Invadiu a área de p
 
+        .                  Início da fila      Fim da fila
+        .                   |                   |  
+        .                   p                   u 
+        . 0    1    2    3    4    5    6     7      8    9      
+        ------------------------------------------------------  
+        |    |    | 22 | 55 | 99 | 88 | 33 |  4  |  7  |    |
+        ------------------------------------------------------
+        .                               N-1   p     u
 
-*/
+    . Problema: E se a lista cheia, u == N, com espaços livres?
+    . Solução: Chegou ao fim, volta para o primeiro (circular).
+        -> Como mostra o exemplo abaixo:
+    */
