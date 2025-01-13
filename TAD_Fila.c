@@ -178,4 +178,45 @@ Fila cheia:
     . Problema: E se a lista cheia, u == N, com espaços livres?
     . Solução: Chegou ao fim, volta para o primeiro (circular).
         -> Como mostra o exemplo abaixo:
+        -> fila[u] = 33 
+
+
+        .          Início da fila      Fim da fila
+        .           |                   |  
+        .           p                   u -> (u+1==N? u=0)
+        . 0    1    2    3    4    5    6     7        8      9      
+        -----------------------------------------------------------  
+        |    |    | 22 | 55 | 99 | 88 | 33 |  2  |  6 -> 0  |    |
+        -----------------------------------------------------------
+        .                               N-1   p     u
+
+Fila: Implementação com lista estática circular:
+    . Problema: E se a fila cheia, u == N, tem espaços livres
+    . Solução: chegou ao fim, volta para o primeiro (circular)
+        -> Veja os exemplos de código abaixo:
     */
+
+// Enfilera 
+
+void enfilera(int y){
+    fila[u++] = y;
+    if(u==N) 
+    u=0;        // <=
+}
+
+// Desenfilera
+
+void desenfilera()(
+    int x=fila[p++];
+    if(p==N)
+    p=0;        // <=
+    return x;
+)
+
+/*
+Lista estática circular - vazia X cheia
+    . Decisão: posição entes de p fica vazio (diferenciar cheia e vazia)
+        -> Fila cheia:
+            => u+1==p ou (u+1==N e p==0)
+            => Ou seja, se (0+1)%N==p
+*/
