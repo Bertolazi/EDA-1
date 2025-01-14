@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 /*
 Tipos abstratos de dados:
 Fila:
@@ -63,7 +65,7 @@ int fila[N];
 int p, u;
 
 int vazia(){
-    return p == u;
+    return p == u; // Como dito anteriormente na criação da lista se p e u estão na mesma posição ela está vazia
 }
 
 /*
@@ -102,7 +104,8 @@ int fila[N];
 int p, u;
 
 int desenfilera(){
-    return fila[p++]; // p++ ou ++p?
+    return fila[p++]; // Incrementamos 1 no p, assim eliminamos o primiro "item" da fila
+    // p++ ou ++p? 
     // p++ geralmente é usado para garantir que você está utilizando o elemento correto da fila antes de incrementar o p, usar o ++p poderia levar a um acesso incorreto dos elementos
     // da fila.
 }
@@ -133,7 +136,7 @@ int fila[N];
 int p, u;
 
 void enfilera(int y){
-    fila[u++] = y;
+    fila[u++] = y; // Incrementamos o u, para dicionar mais um item na lista e adicionamos o item y
 }
 
 /*
@@ -200,18 +203,18 @@ Fila: Implementação com lista estática circular:
 
 void enfilera(int y){
     fila[u++] = y;
-    if(u==N) 
+    if(u==N) // Se u = N, u iguala a zero, assim temos uma solução circular
     u=0;        // <=
 }
 
 // Desenfilera
 
-void desenfilera()(
+int desenfilera(){
     int x=fila[p++];
-    if(p==N)
+    if(p==N) // O mesmo ocorre com p
     p=0;        // <=
     return x;
-)
+}
 
 /*
 Lista estática circular - vazia X cheia
@@ -219,4 +222,76 @@ Lista estática circular - vazia X cheia
         -> Fila cheia:
             => u+1==p ou (u+1==N e p==0)
             => Ou seja, se (0+1)%N==p
+            (0+1)%7 = 1 | (1+1)&7 = 2 | (2+1)%7 = 3
+            (3+1)%7 = 4 | (4+1)%7 = 5 | (5+1)%7 = 6
+            (6+1)%7 = 0
+        -> Fila vazia: u==p
+        -> Veja o exemplo a abaixo
+            => fila[p...u-1] : N=7
+            => cheia (1+1)%7 = 2 = p
+
+            .     Fim  Início
+            .      |    |  
+            .      u = u+1=p                  
+            . 0     1    2    3    4    5    6    7     8     9      
+            -----------------------------------------------------------  
+            | 44 |    | 22 | 55 | 99 | 88 | 33 |  2  |  1  |    |
+            -----------------------------------------------------------
+            .                               N-1   p     u
 */
+
+// Implementação com lista estática - possibilidade de ter várias filas
+
+typedef int Item;
+typedef struct 
+{
+    Item *item;
+    int primeiro, ultimo;
+}Fila;
+
+Fila *criar(int maxN){
+    Fila *p = malloc(sizeof(Fila));     // Aloca espaço para a fila
+    p->item = malloc(maxN*sizeof(Item));  // Aloca espaço dentro da fila para o Item
+    p->primeiro = p->ultimo = 0;        // Faz como vimos nas filas com listas estáticas, iguala o primeiro ao último, indicando que a lista ta vazia
+    return p;                          // Retorna o pomteiro da lista criada
+}
+
+int vazia(Fila *f){
+    return f->primeiro == f->ultimo; // Se o ponteiro que aponta para o primeiro for o mesmo que aponta para o último a lista está vazia
+}
+
+int desenfilera(Fila *f){
+    return f->item[f->primeiro++];  // Nessa função pelo esquema de FIFO, ela tira o primeiro item alocado e incremenat para o primeiro agora ser o segundo
+}
+
+void enfilera(Fila *f, int y){
+    f->item[f->ultimo++] = y;   // Nessa função adicionamos um inteiro y que será o item do novo último, que será adicionado depois do antigo último
+}
+
+void imprime(Fila *f){
+    printf("\nFila p=%d e u=%d\n", f->primeiro, f->ultimo);
+    for(int i=f->primeiro; i<f->ultimo; i++){
+        printf("F[%d]", i);
+    }
+    printf("\n");
+    for (int i=f->primeiro; i<f->ultimo;i++){
+        printf(" %3d  |", f->item[i]);
+    }
+    printf("\n");
+}
+
+int main(){
+    printf("\n\n Criando a dila e enfileirando 10 elementos\n");
+    Fila *fila1 = criar(100);
+    for(int i=0; i<10; i++){
+        enfilera(fila1, i);
+    }
+    imprime(fila1);
+    printf("\n\nDesenfileirando os 3 primeiros elementos\n");
+    for(int i = fila1->primeiro; i<3; i++){
+        desenfilera(fila1);
+    }
+    Fila *fila2 = criar(400);
+    // ...
+    return 0;
+}

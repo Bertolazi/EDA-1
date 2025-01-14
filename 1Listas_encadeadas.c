@@ -1,6 +1,7 @@
 #include <stddef.h> 
 #include <stdio.h> 
 #include <sys/queue.h>
+#include <stdlib.h>
 /*
 Estruturas de dados elementares:
     . Estrutura de dados
