@@ -295,3 +295,30 @@ int main(){
     // ...
     return 0;
 }
+
+/* 
+Lista estática com redimensionamento
+    . Problema: Fila cheia u == N, com espaços livres na fila
+    . Solução: redimensionamento da lista que armazena a fila
+    . Implementação:
+*/
+
+// Lista estática com redimensionamnento
+
+void redimensiona (void){
+    N *= 2;
+    fila = realloc(fila, N*sizeof(int));
+}
+
+// Reajustar a variável p e u de acordo 
+void redimensiona(){
+    N *= 2; // Evitar novos redimensionamentos
+    int *novo = malloc(N*sizeof(int));
+    int j=0;
+    for(int i=p; i<u, i++, j++)
+        novo[j] = fila[i];
+    p = 0;
+    u = j;
+    free(fila);
+    fila = novo;
+}
