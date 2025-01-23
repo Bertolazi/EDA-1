@@ -306,19 +306,40 @@ Lista estática com redimensionamento
 // Lista estática com redimensionamnento
 
 void redimensiona (void){
-    N *= 2;
-    fila = realloc(fila, N*sizeof(int));
+    N *= 2; // Dobra o tamnaho da fila
+    fila = realloc(fila, N*sizeof(int)); // Usa o realloc para redimensionar o tamnho em bytes da fila usando o tamnho de N
 }
 
 // Reajustar a variável p e u de acordo 
 void redimensiona(){
     N *= 2; // Evitar novos redimensionamentos
-    int *novo = malloc(N*sizeof(int));
-    int j=0;
-    for(int i=p; i<u, i++, j++)
-        novo[j] = fila[i];
-    p = 0;
-    u = j;
-    free(fila);
-    fila = novo;
-}
+    int *novo = malloc(N*sizeof(int)); // Cria uma nova fila alocando na quantidade de N
+    int j=0;  
+    for(int i=p; i<u; i++, j++) //  Faz um loop que vai do rimeiro ao último índice da fila 
+        novo[j] = fila[i]; // Copia os índices em um novo array assim esses dados não são perdidos
+    p = 0; // reseta o p para zero onde a fila volta a começar
+    u = j; // Atualiza o u para j, onde a fila termina agora já que está com o dobro do tamanho
+    free(fila); // Liberaespaço de memória alocado na fila original
+    fila = novo; // Atribui a fila ao ovo indicando agora um array com o dobro do tamanho
+} // Conclusão a função de cima atribui mais espaços dos arrays e a função de baixo realoca os espaços dnos lugares corretos
+
+/*
+Implementação com lista encadeada:
+    . Agora vamos ver a aplicação de filas com listas encadeadas
+    . Item desenfilera(cabeca *lista)
+        -> Remover o elemento mais velho => Início da fila
+        -> Acesso ao primeiro elemento => constante
+    . Item enfilera(cabeca *lista, no *novo)
+        -> Ineserir no final da lista
+        -> Acesso ao último elemento => constante
+    . Aceso ao primeiro elemento: Todas as listas => constante
+    . Acesso ao último elemento 
+        -> Lista simplesmente/duplamente escadeada com cabeça 
+            => Metadados->lista->ultimo
+        -> Lista duplamente encadeada circular
+            => no *ultimo = lista->prox->ant 
+                ~> Anterior do primeiro
+        -> Lista simplesmente encadeada circular modificada
+            => Último         
+*/
+
