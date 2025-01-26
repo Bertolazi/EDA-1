@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "1Listas_encadeadas.h"
+
 /*
 Tipos abstratos de dados:
 Fila:
@@ -340,6 +342,84 @@ Implementação com lista encadeada:
             => no *ultimo = lista->prox->ant 
                 ~> Anterior do primeiro
         -> Lista simplesmente encadeada circular modificada
-            => Último         
+            => Último elemento apontar para a cabeça (mesmo tipo dos outros nós)
+            => Inserir na cabeça
+            => Criar uma nova cabeça que aponta para o que a cabeça velha aponta
+            => Velha cabeça/novo elemento: Aponta para??
+            => Implementar
+        -> Lista simplesmente encadeada com cauda
+            => Podemos utilizar um apontador direto para cauda        
+*/ 
+
+// Criar e enfileirar
+void enfilera(cabeca *lista, Item x){
+    no *novo = criar_no(x);
+    if(novo){
+        if(vazia(lista)) 
+            lista->prox = novo;
+        else
+            lista->ultimo->prox; 
+        lista->ultimo = novo; // Inserir no fim 
+        novo->prox = NULL;
+
+    }
+}
+
+// Desenfilera e devolve os itens
+Item desenfilera(cabeca *lista){
+    no *lixo = lista->prox; // Remover_inicio
+    lista->prox = lixo_prox;
+    if(vazia(lista))
+        lista->ultimo = NULL;
+    lista->tam--;
+    Item x = lixo->info;
+    free(lixo);
+    return x;
+}
+
+/*
+Exemplo com fila com listas encadeadas
+    . Vivo ou morto
+        -> Vários participantes (números inteiros) em uma fila única
+        -> Ordem "vivo" (1-levantar), "morto" (0-abaixar)
+        -> O participante que errar a ordem é retirado fazendo a fila andar
+        -> O jogo continua até que tenham apenas um participante (vencedor)
+    . Entrada
+        -> P e R: Número inicial de participantes (códigos de i a P) e rodadas de ordem respectivamente
+        -> P códigos de participantes que estão na ordem que estão na fila
+        -> Cada uma das R linhas seguidas:
+            => Um número inteiro N indicando o número de participantes da rodada
+            => Um número inteiro J (0/morto ou 1/vivo)
+            => N números inteiros representado a ação (0/morto ou 1/vivo) do participante na i-ésima posição da fila
+    . Saída: Código do vencedor
+    . Exemplo:
+        -> Entrada: 5 4
+        .           3 2 1 4 5
+        .           5 1 1 1 1 1 1
+        .           5 0 0 1 0 1 0
+        .           3 0 0 1 0
+        .           2 1 0 1
+        -> Saída: 5
 */
 
+criar_fila();
+
+while (participantes--) // Itera até que todos os participantes estejam enfileirados
+{
+    scanf("%d", &i);    //Lê o identificador do particiapnte
+    enfilera(i);    // Insere o participante na fila
+}
+
+while(rodadas--) // Processa todas as rodadas que vão acontecer
+{
+    scanf("%d %d", &n, &e); // Coloca o número de participantes e o comando realizado
+    while (n--) // Processa os n participantes da jogada
+    {
+        scanf("%d", %s); // Para cada partcipanate colocamos uma jogada para o mesmo
+        x = desenfilera(); // Desenfilera o participante a menos que...
+        if(s == e){
+            enfilera(x) // o cmando relizado for igual ao comando pedido
+        }
+    }   
+}
+printf("%d\n", desenfilera()); // Após todas as jogadas desenfilera o último elemento da fila e imprime na tela seu identificador
