@@ -171,6 +171,8 @@ void PQinsert(Item v){
     . Restaura a ordenação da heap: bottom-up(swim-fixUp)
         -> Flutue (swap) caso a chave seja maior que seu pai
         -> Repetidamente, flutue até pai maior ou raiz
+    . Complexidade 1 + log N comparações - O(log N)
+    . Vamos ver a implementação dessa função
 */
 
 // Código inserção na heap
@@ -253,5 +255,36 @@ Remoção
 
 Item PQdelmax(){
     // Troque topo -> ultimo
+    exch(pq[1], pq[N]);
+    // Reposicione
+    fixDown(1, N-1);
+    // Retorne o removido
+    return pq[N--];
 }
-//pg:38/14 slide
+
+/*
+    . Restaura a ordenação da heap: top-down (sink-fixDown)
+        -> Afunde caso a chave seja menor que os filhos
+            => swap com o maior filho
+        -> Repetidamente, afunde até ser maior ou igual que os filhos ou ser folha
+        -> Complexidade 2 log N comparações - O(log N)
+        -> Vamos ver essa implementação em código
+*/
+
+void fixDown(int k, int N){
+    // Enquanto tiver filho (?)
+    while(2*k<=N){
+        int j = 2*k; // Filho da esquerda
+        // Se tiver filho da direita e for maior?
+        if(j<N && less(pq[j], pq[j-1]))
+            j++;
+        // p[k] maior que o filho?
+        if(!less(pq[k], pq[j]))
+            break;
+        // senão, afunde (troque com o filho)
+        exch(pq[k], pq[j]);
+        // Atualiza k para o maior filho
+        k = j;
+    }
+}
+
