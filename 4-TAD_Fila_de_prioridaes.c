@@ -275,6 +275,8 @@ void fixDown(int k, int N){
     // Enquanto tiver filho (?)
     while(2*k<=N){
         int j = 2*k; // Filho da esquerda
+        // 2*k até N - dobrando a cada interação
+        // Altura aproximadamente lok k
         // Se tiver filho da direita e for maior?
         if(j<N && less(pq[j], pq[j-1]))
             j++;
@@ -288,3 +290,174 @@ void fixDown(int k, int N){
     }
 }
 
+/*
+Várias filas
+    . Implementação com array
+    . Várias filas
+*/
+
+typedef int Item;
+typedef struct{
+    Item *pq;
+    int N;
+}PQueue;
+
+PQueue *PQinit(int);
+int PQempty(PQueue);
+void PQinsert(PQueue*, Item);
+Item PQdelmax(PQueue);
+
+void fixUp(PQueue*, int);
+void fixDown(PQueue*, int);
+
+/*
+Alterar prioridade
+    . Se temos o índice na fila de prioridades é trivial
+*/
+
+void PQchange(int k, int valor){
+    v[k] = valor;
+    fixUp(k);
+    fixDown(k, N);
+}
+
+/*
+    . Se não tem acesso direto?
+    . Alterar a chave de valor 10 por 50?
+        -> Veja o exemplo abaixo
+    pq[k]
+    [0] - -
+    [1] - 30
+    [2] - 23
+    [3] - 17
+    [4] - 09
+    [5] - 10
+    [6] - 04
+    . Base de dados: dta[i]
+    . Fila de prioridaddes: Posições da base de dados
+        -> pq[k] = i
+        -> i o índice em data[i]
+        -> k sua prioridade (posição na fila)
+    . Se alterar algum dado de data?
+        -> Se data[0].chave = 50?
+        -> Veja abaixo
+    data[i]
+    [0] {José, 10}
+    [1] {Maria, 09}
+    [2] {Júlio, 04}
+    [3] {Paulo, 23}
+    [4] {Ana, 30}
+    [5] {Carla, 17}
+    . Lista de posições de data em pq
+    . Sendo qp[i] = k <-> data[]
+        -> pq[k] = i
+        -> pq[qp[i]] = i
+    . Veja o código abaixo
+*/
+
+typedef struct{
+    char nome[20];
+    int chave;
+} Item;
+
+static int *pq;
+static int *qp;
+static int N;
+
+void PQinit(int);
+void PQinsert(int);
+void PQchange(int);
+int PQdelmax();
+
+int main(){
+    int data[6] {{"José", 10},
+                 {"Maria", 9},
+                 {"Julio", 4},
+                 {"Paulo", 23}
+                 {"Ana", 30}
+                 {"Carla", 17}};
+    Pqiniq(6);
+    for(int i=0; i<6; i++)
+        PQinsert(i);
+}
+
+void PQinsert(int k){
+    pq=malloc(sizeof(int)*(MaxN+1));
+    qp=malloc(sizeof(int)*(MaxN+1));
+    N=0;
+}
+
+// data[k]
+void PQinsert(int k){
+    pq[++N]=k; // Inserir na última posição
+    qp[k]=N; // Lista de índices
+    fixUp(N); // Consertar a heap
+              // pq[N/2].chave < pq[N].chave
+}
+
+/*
+    . data[0].chave = 50
+    . Atualziar a fila de prioridades
+        -> PQchange(0)
+        -> Encontrar a sua posição na fila através da lista
+            => data[0]->qp[0]=5->pq[qp[0]]->pq[5]=0
+        -> Consertar a heap
+            => fixUp(qp[0]): motivo?
+            => fixDown(qp[0], N): motivo?
+        -> Veja o código abaixo
+*/
+
+void PQchange(int i){
+    // Atualizar o data[i] na fila
+    // data[i] está na posição qp[i]
+    fixUp(qp[i]);
+    fixDown(qp[i], N);
+}
+
+void fixUp(int k){
+    while(k>1 && less(pq[k/2], pq[k])){
+        exch(pq[k], pq[k/2]);
+        k=k/2;
+    }
+}
+
+void fixDown(int k, int N){
+    int j;
+    while(2*k <= N){
+        j=2*k;
+        if(j<N && less(pq[j], pq[j+1]))
+            j++;
+        if(!less(pq[k], pq[j]))
+            break;
+        exch(pq[k], pq[j]);
+        k=j;
+    }
+}
+
+// swap das posições para data[a] e data[b]
+void exch(int a, int b){
+    // Atualizar lista de índices
+    int k = qp[a];
+    qp[a] = qp[b];
+    qp[b] = k;
+
+    // Atualizara  fila de prioridades
+    pq[qp[a]] = a; // na fila pq na posição qp[a], está data [a]
+    pq[qp[b]]= b;  // Na fial pq na posiçaõ qp[b], está data [b]
+}
+
+int main(){
+    Item data[6] {{"José", 10},
+                  {"Maria", 9},
+                  {"Julio", 4},
+                  {"Paulo", 23}
+                  {"Ana", 30}
+                  {"Carla", 17}};
+    PQinit(6);
+    for(int i=0; i<6; i++)
+        PQinsert(i);
+    data[0].chave = 50;
+    PQchange(0);
+    int k = PQdelmax()
+    printf("%d %s\n", data[k].chave, data[k].nome);
+}
