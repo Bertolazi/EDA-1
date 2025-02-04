@@ -423,3 +423,18 @@ while(rodadas--) // Processa todas as rodadas que vão acontecer
     }   
 }
 printf("%d\n", desenfilera()); // Após todas as jogadas desenfilera o último elemento da fila e imprime na tela seu identificador
+
+/*
+Exemplo 2
+    . Campo minado: Abrir casas
+    . A partir das posições 1 e c abrir todos os espaços adjacentes
+    . Enfileirar os adjacentes para posterior tratamento
+*/
+
+// Resposta do exemplo
+int abrir_mapa(int m, int n, struct area campo[m][n], int l, int c){
+    campo[l][c].visivel = 1;
+    if(campo[l][c].item == -1)
+        return campo[l][c].item; // -1 perdeu
+    struct head fila;
+}
