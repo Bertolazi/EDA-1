@@ -41,5 +41,42 @@ void intro(int *v, int l, int r, int maxdeth){
 
 void intro_sort(int *v, int l, int r){
     // Proporcional à altura de uma árvore balanceada
-    int maxdeth = 2*((int)log2((double)(r-l+1)))
+    int maxdeth = 2*((int)log2((double)(r-l+1)));
+
+    intro(v, l, r, maxdeth);
+    insertion_sort(v, l, r);
 }
+
+/*
+v[] = 11 10 9 8 7 6 1 4 13 12 5
+introsort(v, 0, 10)
+|   maxdepth = 2
+|   intro(v, 0, 10, 2) // quick sem mediana
+|   |   partition(v, 0, 10) : 11 10 9 8 7 6 1 4 13 12 5
+|   |   |                     4 10 9 8 7 6 1 11 13 12 5
+|   |   |                     4 1 9 8 7 6 10 11 13 12 5
+|   |   |                     4 1 5 8 7 6 10 11 13 12 9
+|   |   intro(v, 0, 1, 1) // quick esquerda
+|   |   | // r-l<=2 : 4 1
+|   |   | return
+|   |   intro(v, 2, 10, 1) // quick direita
+|   |   |   partition(v, 0, 10) : 8 7 6 10 11 13 12 9
+|   |   |   |                     8 7 6 10 11 13 12 9
+|   |   |   |                     8 7 6 9 11 13 12 10
+|   |   |   intro(v, 2, 6, 0) // quick esquerda
+|   |   |   |   // maxdepth == 0
+|   |   |   |   heap(v, 2, 6) : 8 7 6
+|   |   |   |   |               8 7 6
+|   |   |   |   |               8 7 6
+|   |   |   |   |               6 7 8
+|   |   |   |   |               6 7 8
+|   |   |   |   |               6 7 8
+|   |   |   |   |               7 6 8
+|   |   |   |   |               6 7 8
+|   |   |   |   |               6 7 8
+|   |   |   |   |               6 7 8
+|   |   |   intro 
+.
+.
+.
+*/
