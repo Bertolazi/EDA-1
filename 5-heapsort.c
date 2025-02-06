@@ -186,9 +186,172 @@ int *pq = v-1; // pq aponta &v[0]-1
     v       0    1    2    3    4    5    6    7    8
     pq  0   1    2    3    4    5    6    7    8    
       [     12   22   43   16   10   18   40   68   94  ]  
-        -> Agora fazemos novamente o fixDown da raiz que foi trocada
-            => 43 e comparamos com os filhos
-Pg 36
+            => fixDown(1, --N)  (Isso faz para reduzimos a fila)
+        -> Agora comparamos a raiz com os filhos
+            => 43 é o maior filho então trocamos o 12 pelo 43
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5    6    7    8    
+      [     43   22   12   16   10   18   40   68   94  ]  
+            => Agora swap 12 com 40
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5    6    7    8    
+      [     43   22   40   16   10   18   12   68   94  ] 
+        -> swap 43 com 12
+            => exch(pq[1], pq[N])
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5    6    7       
+      [     12   22   40   16   10   18   43   68   94  ] 
+            => fixDown(1, --N)
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5    6           
+      [     12   22   40   16   10   18   43   68   94  ] 
+        -> Analiza os filhos da raiz: 12 (filhos: 22 e 40)
+            => O maior filho é o 40, então trocamos
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5    6           
+      [     40   22   12   16   10   18   43   68   94  ] 
+      40
+     /  \
+    22   12
+    / \  / 
+   16 10 18 
+            => No caso 12 só tem um filho, 18
+            => 18 é maior, então fazemos a troca
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5    6           
+      [     40   22   18   16   10   12   43   68   94  ] 
+        -> Agora trocamos a raiz pelo último
+            => No caso 40 por 12
+            => Trocamos e decrementamos N
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5               
+      [     12   22   18   16   10   40   43   68   94  ] 
+      12
+     /  \
+    22   18
+    / \   
+   16 10 
+        -> Novamente analizamos os filhos da raiz
+            => 12 é a raiz, e os seus filhos são 22 e 18
+            => O maior filho é 22
+            => Então troca
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5               
+      [     22   12   18   16   10   40   43   68   94  ]    
+      22
+     /  \
+    12   18
+    / \   
+   16 10 
+        -> Agora analizamos os filhos de 12
+            => No exemplo o 16 é o maior filho
+            => Então trocamos
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4    5               
+      [     22   16   18   12   10   40   43   68   94  ]    
+            => Trocamos a raiz pelo último da fila
+            => Diminuimos 1 no N
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4                  
+      [     10   16   18   12   22   40   43   68   94  ] 
+      10
+     /  \
+    16   18
+    / \   
+   18 12 
+        ->  Novamente analizamos a raíz
+            => A raiz é 10, agora os filhos são 16 e 18
+            => O maior filho é 18, então trocamos     
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3    4                  
+      [     18   16   10   12   22   40   43   68   94  ] 
+            => Como estamos na raiz, fazemos:
+            => exch(pq[1], pq[N])
+            => E retiramos um da fila de prioridade
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3                     
+      [     12   16   10   18   22   40   43   68   94  ] 
+      12
+     /  \
+    16   10
+        -> Agora comparamos a raiz com os filhos
+            => 16 é o maior filho, então
+            => Troca
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2    3                     
+      [     16   12   10   18   22   40   43   68   94  ] 
+            => exch(pq[1], pq[N])
+            => fixDown(1, --N)
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2                         
+      [     10   12   16   18   22   40   43   68   94  ] 
+        -> Analiza a raiz com seus filhos
+            => O filho é 12 então troca
+    v       0    1    2    3    4    5    6    7    8
+    pq  0   1    2                         
+      [     12   10   16   18   22   40   43   68   94  ] 
+            => E jogamos o maior para o final
+    v       0    1    2    3    4    5    6    7    8
+    pq  0                                
+      [     10   12   16   18   22   40   43   68   94  ] 
 
+      10
+        -> Se N != 1 = fim
+    v       0    1    2    3    4    5    6    7    8
+    pq  0                                
+      [     10   12   16   18   22   40   43   68   94  ] 
+            => VETOR ORDENADO!!!
+    -> Vamos voltar para parte da construção
+        => Inicializa na metade do vetor
+        => N/2 (pai dos nós folhas)
+            _ Pular sub-heaps de tamanho 1
+        => Termina na posição 1
+*/
 
+// Ciclo de repetição
+
+for(int k=N/2; k>=1; k--){
+    fixDown(k, N);
+}
+
+/*
+    -> Fase 2: Ordenação decrescente
+        => Remover o máximo repetidamente
+        => Raiz para o fim da fila
+        => Dimunui-se o tamanho da fila
+        => fixDown da raiz
+*/
+
+// Código 
+
+while(N>1){
+    exch(pq[1], pq[N]);
+    fixDown(1, --N);
+}
+
+// Com isso, vamos montar agora o nosso heapSort
+
+void heap_sort(Item *v, int l, int r){
+    pq = v+l-1; // fila de prioridades constrída em v
+                // Uma posição anterior a v[l]
+                // Se l=0 -> pq[1] = v[0]
+    N = r-l+1;
+
+    for(int k=N/2; N>1; k--){
+        fixDown(k, N);
+    }
+
+    while(N>1){
+        exch(pq[1], pq[N]);
+        fixDown(1, --N);
+    }
+}
+
+/*
+    -> Complexidade proporcional a 2N.logN : O(n.logn)
+    -> In-place: Sim
+    -> Estabilidade: Não é estável
+    -> Adaptatividade:
+        => Complexidade não é alterada, pois mesmo na criação da heap há a diminuição do custo, na ordenação continuamos com o custo linearítmico
+        => Portanto, não é adaptativo
 */
