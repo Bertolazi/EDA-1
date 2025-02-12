@@ -1,3 +1,6 @@
+#include "stdio.h"
+#include "1Listas_encadeadas.h"
+#include "stdlib.h"
 /*
 Pilha
     . Listas com coportamento LIFO (Last In, First Out): Último a entrar, primeiro a sair
@@ -161,4 +164,66 @@ Item espiar(Pilha *p){
 
 /*
     . Implementação com listas encadeadas
+        -> Inserções no topo da pilha
+        -> Remoções no topo da pilha
+        -> Complexidade constante
+            => TOPO: ???
+            => Possível com listas encadeadas?
 */
+
+// Empilha no topo - topo ??? - inserir ???
+void empilha(head *lista, Item x){
+    node *novo = criar_no(x);
+    if(novo){
+        if(vazia(lista))
+            lista->ultimo = novo;
+        novo->prox = lista->prox;
+        lista->prox = novo;
+        lista->num_itens++;
+    }
+}
+
+// Desempilha do topo - topo ??? - reover ???
+Item desempilha(head *lista){
+    node *topo = lista->prox;
+    lista->prox = topo->prox;
+    if(topo = lista->ultimo)
+        lista->ultimo = NULL;
+    lista->num_itens--;
+    Item x = topo->info;
+    free(topo);
+    return x;
+}
+
+Item espia(head *p){
+    return(p->prox->info);
+}
+
+/*
+    . Problema - calculadora posfixada
+        -> Desenvolva um programa que leia da entrada padrão uma expressão matemática posfixada, compute o resultado e mostre na saída padrão.
+            => Eduarda: 5 9 8 + 4 6 * * 7 + *
+            => Saída: 2075
+            => ./"5 9 8 + 4 6 * * 7 + *"
+*/
+
+int main(int argc, char *argv[]){
+    char *a = argv[1];
+    head *pilha = criar_lista();
+    for(int i=0; a[i]!='\0'; i++){
+        // Operação do operador sobre os operandos lidos
+        if(a[i] == '+')
+            empilha(pilha, desempilha(pilha)+desempilha(pilha));
+        if(a[i] == '*')
+            empilha(pilha, desempilha(pilha)*desempilha(pilha));
+        // Colocar zero a esquerda
+        if((a[i]>='0') && (a[i]<='9'))
+            empilha(pilha, 0);
+        // Calcular o equivalente numerico de uma seuqência de caracteres
+        while((a[i]>='0') && (a[i]<='9'))
+            // Calcula o decimal, centena... + valor numérico
+            empilha(pilha, 10*desempilha(pilha) + (a[i++]-'0'));
+    }
+    printf("%d \n", desempilha(pilha));
+}
+
