@@ -250,7 +250,8 @@ typedef struct
     Item *item;
     int primeiro, ultimo;
 }Fila;
-
+free(no2);
+    }
 Fila *criar(int maxN){
     Fila *p = malloc(sizeof(Fila));     // Aloca espaço para a fila
     p->item = malloc(maxN*sizeof(Item));  // Aloca espaço dentro da fila para o Item
@@ -437,4 +438,29 @@ int abrir_mapa(int m, int n, struct area campo[m][n], int l, int c){
     if(campo[l][c].item == -1)
         return campo[l][c].item; // -1 perdeu
     struct head fila;
+    struct celula *no = malloc(sizeof(struct celula));
+    no->l = l;
+    no->c = c;
+    STAILQ_INIT(&fila);
+    STAILQ_ISERT_TAIL(&fila, no, prox);
+    while (!STAIL_EMPTY(&fila))
+    {
+        struct celula *no2 = STAILQ_FIRST(&fila);
+        STAILQ_REMOVE_HEAD(&fila, prox);
+        if(campo[no->l][no2->c].item==0){
+            for(int i=no2->l-1; i<=no2->l+1; i++){
+                for(int j=no2->c-1; j<=no2->c+1; j++){
+                    if(i>=0 && i<m && j>=0 && j<n && campo[i][j].visivel==0){
+                        campo[i][j].visivel = 1;
+                        struct celula *no3 = malloc(sizeof no3);
+                        no3->1=i; 
+                        no3->c=j;
+                        STAILQ_INSERT_TAIL(&fila, no3, prox);
+                    }
+                }
+            }
+        }
+        free(no2);
+    }
+    return 0;
 }
